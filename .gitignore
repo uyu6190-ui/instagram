@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+
+.DS_Store
+
+# Uploaded local data
+images/
+cropped_images/
+profile_images/
+settings.json
+
+# Streamlit runtime/cache files
+.streamlit/secrets.toml
+
