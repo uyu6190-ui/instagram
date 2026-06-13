@@ -15,3 +15,4 @@ settings.json
 
 # Streamlit runtime/cache files
 .streamlit/secrets.toml
+.vercel
