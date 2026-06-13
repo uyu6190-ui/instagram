@@ -3,6 +3,10 @@ __pycache__/
 
 .DS_Store
 
+# React/Vite
+node_modules/
+dist/
+
 # Uploaded local data
 images/
 cropped_images/
@@ -11,4 +15,3 @@ settings.json
 
 # Streamlit runtime/cache files
 .streamlit/secrets.toml
-

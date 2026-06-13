@@ -21,6 +21,17 @@ python3 -m pip install -r requirements.txt
 
 ## Run
 
+React 版（貼り付けコードの実装）:
+
+```bash
+npm install
+npm run dev
+```
+
+ブラウザで `http://localhost:3000/` を開きます。
+
+Streamlit 版:
+
 ```bash
 python3 -m streamlit run app.py
 ```
