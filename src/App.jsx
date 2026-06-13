@@ -351,7 +351,7 @@ function LoginScreen({ onGoogle, onGuest }) {
       <div className="wl-card">
         <Ribbon />
         <h1 className="wl-logo">view me</h1>
-        <p className="wl-sub">じぶんのプロフィールを<br />かわいく きろくしよう</p>
+        <p className="wl-sub">じぶんの とっておきのフィードを<br />試そう</p>
         <div className="wl-dots"><span /><span /><span /></div>
 
         <button className="g-btn" onClick={onGoogle}>
@@ -428,7 +428,7 @@ function WelcomeScreen({ onStart }) {
       <div className="wl-card">
         <Ribbon />
         <h1 className="wl-logo">view me</h1>
-        <p className="wl-sub">じぶんのプロフィールを<br />かわいく きろくしよう</p>
+        <p className="wl-sub">じぶんの とっておきのフィードを<br />試そう</p>
         <div className="wl-dots"><span /><span /><span /></div>
         <button className="wl-start" onClick={onStart}>
           プロフィールをつくる ➜
