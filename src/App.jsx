@@ -320,6 +320,59 @@ function HighlightEditModal({ value, isNew, onChange, onPickImage, onSave, onDel
   );
 }
 
+/* ================= About モーダル ================= */
+function AboutModal({ appName, onClose }) {
+  const [synced, setSynced] = useState(false);
+  const open = (url) => window.open(url, "_blank", "noopener,noreferrer");
+
+  return (
+    <div className="sheet-backdrop" onClick={onClose}>
+      <div className="edit-modal about-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="edit-head">
+          <span className="edit-cancel" style={{ visibility: "hidden" }}>閉じる</span>
+          <span className="edit-title">About</span>
+          <button className="edit-done" onClick={onClose}>閉じる</button>
+        </div>
+
+        <div className="edit-body about-body">
+          <Ribbon />
+          <h2 className="about-app">about {appName}</h2>
+
+          <p className="about-thanks">お使いいただきありがとうございます</p>
+          <p className="about-sub">
+            ご意見ご要望があれば教えてくださると<br />ほんとうにうれしいです
+          </p>
+
+          <button className="about-row" onClick={() => open("mailto:inuteddy12@example.com?subject=" + encodeURIComponent(appName + " お問い合わせ"))}>
+            <span className="ar-main">お問い合わせ</span>
+            <span className="ar-desc">不具合報告・ご意見ご要望をください</span>
+          </button>
+
+          <button className="about-row" onClick={() => open("https://apps.apple.com/")}>
+            <span className="ar-main">★ レビューで応援する</span>
+            <span className="ar-desc">よろしければ App Store のレビューを。励みになります</span>
+          </button>
+
+          <button className={"about-row toggle" + (synced ? " on" : "")} onClick={() => setSynced((s) => !s)}>
+            <span className="ar-main">☁︎ データを iCloud に同期</span>
+            <span className="ar-desc">{synced ? "同期がオンになっています" : "別の端末でも同じデータを使えます"}</span>
+            <span className="ar-switch"><i /></span>
+          </button>
+
+          <div className="about-section">
+            <div className="about-section-title">other apps</div>
+            <div className="other-empty">（後々追加します）</div>
+          </div>
+
+          <button className="about-credit" onClick={() => open("https://x.com/inuteddy12")}>
+            created by <b>inu teddy</b> <span className="x-mark">𝕏</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ================= 背景の浮遊グラデーションブロブ ================= */
 function Blobs() {
   return (
@@ -351,7 +404,7 @@ function LoginScreen({ onGoogle, onGuest }) {
       <div className="wl-card">
         <Ribbon />
         <h1 className="wl-logo">view me</h1>
-        <p className="wl-sub">じぶんの とっておきのフィードを<br />試そう</p>
+        <p className="wl-sub">じぶんのプロフィールを<br />かわいく きろくしよう</p>
         <div className="wl-dots"><span /><span /><span /></div>
 
         <button className="g-btn" onClick={onGoogle}>
@@ -428,7 +481,7 @@ function WelcomeScreen({ onStart }) {
       <div className="wl-card">
         <Ribbon />
         <h1 className="wl-logo">view me</h1>
-        <p className="wl-sub">じぶんの とっておきのフィードを<br />試そう</p>
+        <p className="wl-sub">じぶんのプロフィールを<br />かわいく きろくしよう</p>
         <div className="wl-dots"><span /><span /><span /></div>
         <button className="wl-start" onClick={onStart}>
           プロフィールをつくる ➜
@@ -509,6 +562,7 @@ export default function App() {
   const hlCounter = useRef(0);
   const [editing, setEditing] = useState(false);
   const [menuId, setMenuId] = useState(null);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [reorderMode, setReorderMode] = useState(false);
   const [crop, setCrop] = useState(null); // {src, mode:'new'|'replace'|'avatar'|'highlight', id?}
   const fileRef = useRef(null);
@@ -750,7 +804,9 @@ export default function App() {
           {profile.username || "user"} <span className="chev">{I.chevron()}</span><span className="reddot" />
         </div>
         <div className="top-right">
-          <button className="icon-btn">{I.burger()}</button>
+          <button className="icon-btn about-btn" onClick={() => setAboutOpen(true)} aria-label="about">
+            {I.burger()}<span className="about-tag">about</span>
+          </button>
         </div>
       </header>
 
@@ -898,6 +954,11 @@ export default function App() {
         />
       )}
 
+      {/* About */}
+      {aboutOpen && (
+        <AboutModal appName="view me" onClose={() => setAboutOpen(false)} />
+      )}
+
       {/* トリミング */}
       {crop && (
         <CropModal
@@ -936,6 +997,8 @@ body { margin: 0; background: #fff; }
 .chev { display: flex; align-items: center; margin-top: 3px; }
 .reddot { width: 8px; height: 8px; border-radius: 50%; background: #ff3040; margin-left: 2px; margin-top: -8px; }
 .top-right { display: flex; gap: 14px; }
+.about-btn { flex-direction: column; gap: 1px; }
+.about-tag { font-size: 8.5px; font-weight: 700; color: #8a929a; letter-spacing: .5px; line-height: 1; }
 
 .profile { display: flex; align-items: center; padding: 14px 16px 6px; gap: 8px; }
 .ava-wrap { position: relative; flex-shrink: 0; }
@@ -1335,5 +1398,51 @@ body { margin: 0; background: #fff; }
 .guest-banner {
   background: #f3f5f6; border: 1px solid #e0e3e6; border-radius: 12px;
   font-size: 11px; color: #7a838b; padding: 8px 12px; margin-bottom: 16px; line-height: 1.6;
+}
+
+/* --- About モーダル --- */
+.about-body { padding: 8px 20px 30px; }
+.about-app {
+  text-align: center; font-family: 'Libre Baskerville', Georgia, serif; font-style: italic;
+  font-size: 24px; font-weight: 700; color: #2b3138; margin: 8px 0 18px;
+}
+.about-thanks { text-align: center; font-size: 15px; font-weight: 700; color: #3a4148; margin: 0 0 8px; }
+.about-sub { text-align: center; font-size: 12.5px; color: #969ca2; line-height: 1.8; margin: 0 0 22px; }
+
+.about-row {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+  width: 100%; text-align: left; background: #f6f7f8; border: 1px solid #e8eaec;
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
+  font-family: inherit;
+}
+.about-row:active { background: #eef0f2; }
+.ar-main { font-size: 15px; font-weight: 700; color: #2b3138; }
+.ar-desc { font-size: 11px; color: #9aa1a8; line-height: 1.5; }
+
+.about-row.toggle { padding-right: 64px; }
+.ar-switch {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 24px; border-radius: 14px; background: #d4d8dc; transition: background .2s;
+}
+.ar-switch i {
+  position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: left .2s;
+}
+.about-row.toggle.on .ar-switch { background: #7aa7d9; }
+.about-row.toggle.on .ar-switch i { left: 18px; }
+
+.about-section {
+  border: 1px dashed #dce0e4; border-radius: 14px; padding: 14px 16px; margin: 4px 0 18px;
+}
+.about-section-title { font-size: 11px; letter-spacing: 1.5px; color: #8a929a; font-weight: 700; margin-bottom: 8px; }
+.other-empty { font-size: 13px; color: #b0b6bc; }
+
+.about-credit {
+  display: block; width: 100%; text-align: center; background: none; border: none;
+  font-family: inherit; font-size: 13px; color: #8a929a; cursor: pointer; padding: 10px;
+}
+.about-credit b { color: #3a4148; }
+.x-mark {
+  display: inline-block; margin-left: 2px; font-size: 13px; color: #2b3138; font-weight: 700;
 }
 `;
